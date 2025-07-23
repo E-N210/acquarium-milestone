@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+          <!--  IMPORT A-FRAME-->
+          <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+
+          <!--  IMPORT AR.JS GEOLOCATION-->
+        <script type='text/javascript' src='https://raw.githack.com/AR-js-org/AR.js/master/three.js/build/ar-threex-location-only.js'></script>
+    
+          <!--  IMPORT AFRAME-AR -->
+        <script type='text/javascript' src='https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js'></script>
+          <!--  IMPORT EVENT-SET -->
+        <script src="../superframe-master/components/event-set/dist/aframe-event-set-component.min.js"></script>
+          
+        <!--  IMPORT SUPERFRAME 3D TEXT -->
+        <script src="../superframe-master/components/text-geometry/dist/aframe-text-geometry-component.min.js"></script>
+        <!-- IMPORT A-FRAME EXTRAS FOR ANIMATION MIXER-->
+         <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.6.0/dist/aframe-extras.min.js"></script> 
+        
+        <!--  MAIN AR BEHAVIOUR-->
+
+
+</head>
+<body>
+
+    <a-scene vr-mode-ui='enabled: false' arjs='sourceType: webcam; videoTexture: false; debugUIEnabled: false' renderer='antialias: true; alpha: true' shadow = 'enabled:true; type: basic' id="a-scene">
+        <a-camera id="camera" gps-new-camera='gpsMinDistance: 2' look-controls mouse-cursor  shadow="near: 0.5; far: 50; cast-soft: true">
+            <a-entity cursor="rayOrigin: mouse"></a-entity>
+        </a-camera>
+
+        <a-assets>
+            <a-asset-item id="s1" src="./assets/whale/scene.gltf"></a-asset-item>
+            <a-asset-item id="s2" src="./assets/shark12/scene.gltf"></a-asset-item>
+            <a-asset-item id="s3" src="./assets/octopus/scene.gltf"></a-asset-item>
+            <a-asset-item id="s4" src="./assets/jellyfish/scene.gltf"></a-asset-item>
+        </a-assets>
+
+      
+
+
+
+            <a-entity id="object2" gltf-model="#s4" position="0 5 0" scale="1 1 1" ></a-entity>
+
+
+            <a-entity id="object" gltf-model="#s1" rotation="0 140 0" position="0 5 0" scale="0.05 0.05 0.05" ></a-entity>
+            
+            <a-entity id="object3" gltf-model="#s2" rotation="0 180 0" position="0 0 0" scale="0.05 0.05 0.05 "></a-entity>
+
+     
+
+
+
+    </a-scene>
+
+<script>
+
+AFRAME.registerComponent('look-at', {
+  schema: { type: 'selector' },
+
+  tick: function () {
+    this.el.object3D.lookAt(this.data.object3D.position)
+  }
+
+})
+
+let testEntityAdded = false;
+
+const el = document.querySelector("[gps-new-camera]");
+const object= document.getElementById("object")
+const object2= document.getElementById("object2")
+
+const object3= document.getElementById("object3")
+
+var count=0
+
+setInterval(function(){
+    count= count+1
+    //object.setAttribute("rotation", {x:0,y:count,z:0})
+    //    object2.setAttribute("rotation", {x:0,y:count,z:0})
+},40)
+
+
+
+el.addEventListener("gps-camera-update-position", e => {
+    console.log("gps updated")
+
+    if(!testEntityAdded) {
+        console.log(e.detail.position)
+        object.setAttribute('gps-new-entity-place', {
+                latitude: e.detail.position.latitude-0.0003,
+                longitude: e.detail.position.longitude+0.00015,
+        });
+        object.setAttribute("animation-mixer", {clip:"Swimming", timeScale:1})
+        
+
+        object2.setAttribute('gps-new-entity-place', {
+                latitude: e.detail.position.latitude,
+                longitude: e.detail.position.longitude+0.00015,
+        });
+        object2.setAttribute("animation-mixer", {clip:"Object_0", timeScale:1})
+        
+
+
+        object3.setAttribute('gps-new-entity-place', {
+                latitude: e.detail.position.latitude-0.0005,
+                longitude: e.detail.position.longitude-0.0005,
+        });
+        object3.setAttribute("animation-mixer", {clip:"Swim", timeScale:1})
+        
+        
+            
+    }
+
+
+})
+
+
+
+
+
+
+</script>
+
+
+    
+</body>
+</html>
