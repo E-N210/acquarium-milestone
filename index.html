@@ -103,23 +103,23 @@ el.addEventListener("gps-camera-update-position", e => {
     if(!testEntityAdded) {
         console.log(e.detail.position)
         object.setAttribute('gps-new-entity-place', {
-                latitude: e.detail.position.latitude-0.0003  + Math.random()*0.0006,
-                longitude: e.detail.position.longitude+0.00015  + Math.random()*0.0003,
+                latitude: e.detail.position.latitude-0.0003 ,
+                longitude: e.detail.position.longitude,
         });
         object.setAttribute("animation-mixer", {clip:"Swimming", timeScale:1})
 
 
 
         object2.setAttribute('gps-new-entity-place', {
-                latitude: e.detail.position.latitude-0.0005 + Math.random()*0.001,
-                longitude: e.detail.position.longitude-0.0005  + Math.random()*0.001 ,
+                latitude: e.detail.position.latitude,
+                longitude: e.detail.position.longitude-0.0005 ,
         });
         object2.setAttribute("animation-mixer", {clip:"Swim", timeScale:1})
 
 
         object6.setAttribute('gps-new-entity-place', {
-                latitude: e.detail.position.latitude-0.0005  + Math.random()*0.001,
-                longitude: e.detail.position.longitude-0.0002  + Math.random()*0.0004,
+                latitude: e.detail.position.latitude+0.0005 ,
+                longitude: e.detail.position.longitude  ,
         });
         //object2.setAttribute("animation-mixer", {clip:"Swim", timeScale:1})
         
