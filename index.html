@@ -23,12 +23,47 @@
         
         <!--  MAIN AR BEHAVIOUR-->
 
+        <style>
+  #loadingScreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-image: url(./assets/water.png);
+    background-size: cover;
+    background-position: center;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+    font-family: sans-serif;
+  }
+
+  p{width:80%}
+</style>
+
+
 
 </head>
 <body>
+    <div id="loadingScreen">
+        <h1>We are loading the Experience</h1><br><br>
+        <p>if you are accessing this from an IOS device please note that safari automatically blocks GPS, to allow that please do the following:<br><br>
 
+          1．Open iOS Settings</br></br>
+            2．Choose Privacy > Location Services > If the Location Services is disabled, turn it on.</br></br>
+            3．Choose Privacy > Location Services > Safari Websites</br></br>
+            4．Choose While Using the App under Allow Location Access</br></br>
+            5．Reload the page on the browser</br></br>
+        </p>
+    </div>
+    
     <a-scene id="scene" vr-mode-ui='enabled: false' arjs='sourceType: webcam; videoTexture: false; debugUIEnabled: false' renderer='antialias: true; alpha: true' shadow = 'enabled:true; type: basic' id="a-scene">
-        <a-camera id="camera" gps-new-camera='gpsMinDistance: 2' look-controls mouse-cursor  shadow="near: 0.5; far: 50; cast-soft: true">
+        <a-camera id="camera" gps-new-camera='gpsMinDistance: 20' look-controls mouse-cursor  shadow="near: 0.5; far: 50; cast-soft: true">
             <a-entity cursor="rayOrigin: mouse"></a-entity>
         </a-camera>
 
@@ -50,12 +85,33 @@
             <a-entity id="object2" gltf-model="#s4" position="0 5 0" scale="1 1 1" ></a-entity>
            --> 
 
-            <a-entity id="object" gltf-model="#s1" rotation="0 140 0" position="0 5 0" scale="0.05 0.05 0.05" ></a-entity>
+            <a-entity id="whale" gltf-model="#s1" rotation="0 140 0" position="0 5 0" scale="0.05 0.05 0.05" ></a-entity>
             
-            <a-entity id="object2" gltf-model="#s2" rotation="0 180 0" position="0 0 0" scale="0.05 0.05 0.05 "></a-entity>
+            <a-entity id="shark" gltf-model="#s2" rotation="0 180 0" position="0 0 0" scale="0.05 0.05 0.05 "></a-entity>
 
-            <a-entity id="object6" gltf-model="#s6" rotation="0 135 0" position="0 0 0" scale="10 10 10"></a-entity>
+            <a-entity id="seahorse" gltf-model="#s6" rotation="0 135 0" position="0 0 0" scale="10 10 10"></a-entity>
 
+
+
+
+            <a-entity id="jellyfish1" gltf-model="#s4" rotation="0 0 0" position="0 0 0" scale="2 2 2"></a-entity>
+
+            <a-entity id="jellyfish2" gltf-model="#s4" rotation="0 0 0" position="0 2 0" scale="2 2 2"></a-entity>
+
+            <a-entity id="jellyfish3" gltf-model="#s4" rotation="0 0 0" position="0 3 0" scale="2 2 2"></a-entity>
+
+            <a-entity id="jellyfish4" gltf-model="#s4" rotation="0 0 0" position="0 2 0" scale="2 2 2"></a-entity>
+
+            <a-entity id="jellyfish5" gltf-model="#s4" rotation="0 0 0" position="0 0 0" scale="2 2 2"></a-entity>
+
+            <a-entity id="jellyfish6" gltf-model="#s4" rotation="0 0 0" position="0 0 0" scale="2 2 2"></a-entity>
+
+
+            <a-entity id="starfish1" gltf-model="#s5" rotation="0 90 60" position="0 0 0" scale="0.05 0.05 0.05"></a-entity>
+
+            <a-entity id="starfish2" gltf-model="#s5" rotation="180 200 60" position="0 0 0" scale="0.05 0.05 0.05"></a-entity>
+
+            <a-entity id="starfish3" gltf-model="#s5" rotation="180 300 60" position="0 0 0" scale="0.05 0.05 0.05"></a-entity>
      
 
 
@@ -78,11 +134,29 @@ let starfishAddded=false
 let jellyfishAddded=false
 
 const el = document.querySelector("[gps-new-camera]");
-const object= document.getElementById("object")
-const object2= document.getElementById("object2")
+const whale= document.getElementById("whale")
+const shark= document.getElementById("shark")
+const seahorse= document.getElementById("seahorse")
 
-const object3= document.getElementById("object3")
-const object6= document.getElementById("object6")
+
+const jellyfish1= document.getElementById("jellyfish1")
+const jellyfish2= document.getElementById("jellyfish2")
+const jellyfish3= document.getElementById("jellyfish3")
+const jellyfish4= document.getElementById("jellyfish4")
+const jellyfish5= document.getElementById("jellyfish5")
+
+const jellyfish6= document.getElementById("jellyfish6")
+
+
+const starfish1= document.getElementById("starfish1")
+const starfish2= document.getElementById("starfish2")
+const starfish3= document.getElementById("starfish3")
+
+
+const loadingScreen=document.getElementById("loadingScreen")
+
+
+
 
 var count=0
 
@@ -98,30 +172,99 @@ setInterval(function(){
 
 
 el.addEventListener("gps-camera-update-position", e => {
+
+  loadingScreen.style.display="none"
     console.log("gps updated")
 
     if(!testEntityAdded) {
         console.log(e.detail.position)
-        object.setAttribute('gps-new-entity-place', {
+        whale.setAttribute('gps-new-entity-place', {
                 latitude: e.detail.position.latitude-0.0003 ,
                 longitude: e.detail.position.longitude,
         });
-        object.setAttribute("animation-mixer", {clip:"Swimming", timeScale:1})
+        whale.setAttribute("animation-mixer", {clip:"Swimming", timeScale:1})
 
 
 
-        object2.setAttribute('gps-new-entity-place', {
+        shark.setAttribute('gps-new-entity-place', {
                 latitude: e.detail.position.latitude,
                 longitude: e.detail.position.longitude-0.0005 ,
         });
-        object2.setAttribute("animation-mixer", {clip:"Swim", timeScale:1})
+        shark.setAttribute("animation-mixer", {clip:"Swim", timeScale:1})
 
 
-        object6.setAttribute('gps-new-entity-place', {
+        seahorse.setAttribute('gps-new-entity-place', {
                 latitude: e.detail.position.latitude+0.0005 ,
                 longitude: e.detail.position.longitude  ,
         });
-        //object2.setAttribute("animation-mixer", {clip:"Swim", timeScale:1})
+        seahorse.setAttribute("animation-mixer", {clip:"Animation", timeScale:1})
+
+
+        jellyfish1.setAttribute('gps-new-entity-place', {
+                latitude: e.detail.position.latitude+0.0003 ,
+                longitude: e.detail.position.longitude+0.0002  ,
+        });
+        jellyfish1.setAttribute("animation-mixer", {clip:"Object_0", timeScale:1})
+
+
+        jellyfish2.setAttribute('gps-new-entity-place', {
+                latitude: e.detail.position.latitude+0.0001 ,
+                longitude: e.detail.position.longitude-0.0002  ,
+        });
+        jellyfish2.setAttribute("animation-mixer", {clip:"Object_0", timeScale:1})
+
+
+        jellyfish3.setAttribute('gps-new-entity-place', {
+                latitude: e.detail.position.latitude-0.0001 ,
+                longitude: e.detail.position.longitude+0.0002  ,
+        });
+        jellyfish3.setAttribute("animation-mixer", {clip:"Object_0", timeScale:1})
+
+
+        jellyfish4.setAttribute('gps-new-entity-place', {
+                latitude: e.detail.position.latitude+0.0001 ,
+                longitude: e.detail.position.longitude+0.0002  ,
+        });
+        jellyfish4.setAttribute("animation-mixer", {clip:"Object_0", timeScale:1})
+
+
+        jellyfish5.setAttribute('gps-new-entity-place', {
+                latitude: e.detail.position.latitude+0.0002 ,
+                longitude: e.detail.position.longitude-0.0001  ,
+        });
+        jellyfish5.setAttribute("animation-mixer", {clip:"Object_0", timeScale:1})
+
+
+        jellyfish6.setAttribute('gps-new-entity-place', {
+                latitude: e.detail.position.latitude-0.0002 ,
+                longitude: e.detail.position.longitude-0.0001  ,
+        });
+        jellyfish6.setAttribute("animation-mixer", {clip:"Object_0", timeScale:1})
+
+
+
+        starfish1.setAttribute('gps-new-entity-place', {
+                latitude: e.detail.position.latitude+0.0002 ,
+                longitude: e.detail.position.longitude-0.0002  ,
+        });
+
+
+        starfish2.setAttribute('gps-new-entity-place', {
+                latitude: e.detail.position.latitude-0.0001 ,
+                longitude: e.detail.position.longitude-0.0002  ,
+        });
+
+
+        starfish3.setAttribute('gps-new-entity-place', {
+                latitude: e.detail.position.latitude-0.0002 ,
+                longitude: e.detail.position.longitude+0.0001  ,
+        });
+
+
+
+        
+
+
         
 
         //object2.setAttribute('gps-new-entity-place', {
@@ -130,73 +273,7 @@ el.addEventListener("gps-camera-update-position", e => {
         //});
         //object2.setAttribute("animation-mixer", {clip:"Object_0", timeScale:1})
         
-      for (let i = 0; i < 10; i++) {
-
-
-        let entity = document.createElement("a-entity");
-
-        
-        entity.setAttribute("gltf-model", "#s4");
-
-        entity.setAttribute("scale", "0.5 0.5 0.5");
-
-        entity.setAttribute("position", {x:0,y:Math.random()*5,z:0});
-
-        entity.setAttribute("gps-new-entity-place", {
-          latitude: e.detail.position.latitude - 0.0001 + Math.random() * 0.0002,
-          longitude: e.detail.position.longitude -0.0001 + Math.random() * 0.0002,
-        });
-
-        entity.setAttribute("animation-mixer", {clip:"Object_0", timeScale:1})
-
-        if(jellyfishAddded==false){
-
-          document.getElementById("scene").appendChild(entity);
-        
-        }
-
-        
-
-      }
-
-        jellyfishAddded=true
-
-
-
-
-      for (let i = 0; i <5 ; i++) {
-
-          let entity = document.createElement("a-entity");
-        
-        entity.setAttribute("gltf-model", "#s5");
-
-        entity.setAttribute("scale", "0.01 0.01 0.01");
-
-        entity.setAttribute("position", {x:0,y:Math.random()*5,z:0});
-
-        entity.setAttribute("gps-new-entity-place", {
-          latitude: e.detail.position.latitude - 0.0001 + Math.random() * 0.0002,
-          longitude: e.detail.position.longitude - 0.0001 + Math.random() * 0.0002,
-        });
-
-        entity.setAttribute("animation-mixer", {clip:"Object_0", timeScale:1})
-
-        entity.setAttribute("rotation", {x:180,y:270,z:90})
-
-        //entity.setAttribute("look-at", "#camera")
-        
-
-        //console.log("jellyfish added to scene");
-
-        if(starfishAddded==false){
-
-          document.getElementById("scene").appendChild(entity);
-       
-        }
-        
-      }
-      
-      starfishAddded=true
+  
 
         
     
